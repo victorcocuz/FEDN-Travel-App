@@ -3,7 +3,8 @@
     "version": "1.0.0",
     "main": "server.js",
     "scripts": {
-        "start": "node src/server/server.js"
+        "start": "node src/server/server.js",
+        "build": "webpack"
     },
     "keywords": [],
     "author": "Victor Cocuz",
@@ -11,7 +12,14 @@
     "dependencies": {
         "body-parser": "^1.19.0",
         "dotenv": "^8.2.0",
-        "express": "^4.17.1"
+        "express": "^4.17.1",
+        "webpack": "^4.43.0",
+        "webpack-cli": "^3.3.11"
     },
-    "devDependencies": {}
+    "devDependencies": {
+        "@babel/core": "^7.9.6",
+        "@babel/preset-env": "^7.9.6",
+        "babel-loader": "^8.1.0",
+        "html-webpack-plugin": "^4.3.0"
+    }
 }
