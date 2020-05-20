@@ -1,0 +1,17 @@
+{
+    "name": "fedn-travel-app",
+    "version": "1.0.0",
+    "main": "server.js",
+    "scripts": {
+        "start": "node src/server/server.js"
+    },
+    "keywords": [],
+    "author": "Victor Cocuz",
+    "description": "This is a travel app created as a capstone project to the Front End Development Program at Udacity",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "dotenv": "^8.2.0",
+        "express": "^4.17.1"
+    },
+    "devDependencies": {}
+}
