@@ -1,3 +1,2 @@
 import { testFunction } from './js/app'
-
-alert('hello world');
+import './styles/main.scss'
