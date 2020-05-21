@@ -18,10 +18,10 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 // Initialize the main project folder
-app.use(express.static('../client'));
+app.use(express.static('dist'));
 
 // Create express server
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => console.log(`listening on ${PORT}`));
 
 // Generate app home page
