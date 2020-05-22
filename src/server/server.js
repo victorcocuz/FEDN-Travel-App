@@ -2,15 +2,24 @@
 const dotenv = require('dotenv');
 dotenv.config();
 
+// Get Environment variables
+const GEONAMES_USER = process.env.GEONAMES_USER;
+const PORT = process.env.PORT || 8000;
+
 // Setup Express
 const express = require('express');
 const app = express();
 
-// Use Express to create a proxy server
+// Add Cors and use Express to create a proxy server
+var cors = require('cors');
+app.use(cors());
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');
     next();
   });
+
+// Add Node-Fetch
+const fetch = require("node-fetch");
 
 // Setup Body Parser
 const bodyParser = require('body-parser');
@@ -21,7 +30,6 @@ app.use(bodyParser.json());
 app.use(express.static('dist'));
 
 // Create express server
-const PORT = process.env.PORT || 8000;
 const server = app.listen(PORT, () => console.log(`listening on ${PORT}`));
 
 // Generate app home page
@@ -43,3 +51,39 @@ function addSomething(req, res){
     console.log(req.body);
     data.push(req.body);
 };
+
+// Routes
+app.post('/geonames', sendCoordinates);
+function sendCoordinates (req, res) {
+    (async () => {
+        let coordinates = await getCoordinates(req.body.town);
+        res.send(coordinates);
+    })();
+}
+
+// Call Geonames API:
+const getCoordinates = async (town) => {
+    const baseUrlGeonames = "http://api.geonames.org/searchJSON?"
+    const paramsGeonames = new URLSearchParams({
+        q: town,
+        maxRows: '1',
+        username: GEONAMES_USER
+    });
+    const urlGeonames = `${baseUrlGeonames}${paramsGeonames.toString()}`;
+
+    const response = await fetch(urlGeonames);
+    const result = await response.json();
+    let newLocation = {};
+
+    try {
+        newLocation = {
+            lat: result.geonames[0].lng,
+            lng: result.geonames[0].lng,
+            countryCode: result.geonames[0].countryCode
+        };
+        // console.log(newLocation);
+    } catch (error) {
+        console.log('error:', error);
+    };
+    return newLocation;
+}

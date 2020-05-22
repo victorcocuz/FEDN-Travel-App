@@ -37,6 +37,11 @@ module.exports = {
             // Automatically remove all unused webpack assets on rebuild
             cleanStaleWebpackAssets: true,
             protectWebpackAssets: false
-    })
+        }),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'PORT': '"8000"'
+            }
+        })
     ]
 }

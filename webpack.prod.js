@@ -44,6 +44,11 @@ module.exports = {
             cleanStaleWebpackAssets: true,
             protectWebpackAssets: false
         }),
-        new MiniCssExtractPlugin({filename: '[name].css'})
+        new MiniCssExtractPlugin({filename: '[name].css'}),
+        new webpack.DefinePlugin({
+            'process.env': {
+                'PORT': '"8000"'
+            }
+        })
     ]
 }
