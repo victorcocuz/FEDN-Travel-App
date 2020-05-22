@@ -55,6 +55,7 @@ function addSomething(req, res){
 // Routes
 app.post('/geonames', sendCoordinates);
 function sendCoordinates (req, res) {
+    // Start an IIFE to use `await` at the top level
     (async () => {
         let coordinates = await getCoordinates(req.body.town);
         res.send(coordinates);
