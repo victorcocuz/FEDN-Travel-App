@@ -1,40 +1,60 @@
 const localUrl = `//localhost:${process.env.PORT}`;
-const currentMonth = document.querySelector('.calendar-month-current');
+const today = new Date();
+const currentMonth = [];
 
 // Add calendar and functionality
-window.addEventListener('load', () => {
-    Client.showCalendar(
-        new Date().getUTCFullYear(),
-        new Date().getUTCMonth(),
-        Client.CURRENT
-    );
-});
 
-document.querySelector('.calendar-month-previous').addEventListener('click', () =>{
-    Client.showCalendar(
-        parseInt(currentMonth.getAttribute('data-year')),
-        parseInt(currentMonth.getAttribute('data-month')),
-        Client.PREVIOUS
-    );
-});
+function showCalendar(offset, index) {
+        Client.loadCalendar(
+            parseInt(currentMonth[index].getAttribute('data-year')),
+            parseInt(currentMonth[index].getAttribute('data-month')),
+            offset,
+            index
+        );
+}
 
-document.querySelector('.calendar-month-next').addEventListener('click', () =>{
-    Client.showCalendar(
-        parseInt(currentMonth.getAttribute('data-year')),
-        parseInt(currentMonth.getAttribute('data-month')),
-        Client.NEXT
-    );
-});
+for (let index = 0; index < 2; index++) {
+    currentMonth[index] = document.querySelector(`.calendar-month-current-${index}`);
+    window.addEventListener('load', () => {
+        currentMonth[index].setAttribute('data-year', today.getFullYear());
+        currentMonth[index].setAttribute('data-month', today.getMonth());
+        showCalendar(Client.CURRENT, index);
+    });
+
+    document.querySelector(`.calendar-month-previous-${index}`).addEventListener('click', () =>{
+        showCalendar(Client.PREVIOUS, index);
+    });
+
+    document.querySelector(`.calendar-month-next-${index}`).addEventListener('click', () =>{
+        showCalendar(Client.NEXT, index);
+    });
+}
+
+// document.querySelector('.calendar-month-previous').addEventListener('click', () =>{
+//     Client.loadCalendar(
+//         parseInt(currentMonth.getAttribute('data-year')),
+//         parseInt(currentMonth.getAttribute('data-month')),
+//         Client.PREVIOUS
+//     );
+// });
+
+// document.querySelector('.calendar-month-next').addEventListener('click', () =>{
+//     Client.loadCalendar(
+//         parseInt(currentMonth.getAttribute('data-year')),
+//         parseInt(currentMonth.getAttribute('data-month')),
+//         Client.NEXT
+//     );
+// });
 
 // Set Date information to form
-document.querySelector('#calendar-01').addEventListener('click', getStartDate);
+document.querySelector('#calendar-0').addEventListener('click', getStartDate);
 function getStartDate(event) {
     document.querySelector('#start-date').setAttribute('start-day', event.target.getAttribute('data-day'));
     document.querySelector('#start-date').setAttribute('start-month', event.target.getAttribute('data-month'));
     document.querySelector('#start-date').setAttribute('start-year', event.target.getAttribute('data-year'));
 }
 
-document.querySelector('#calendar-02').addEventListener('click', getEndDate);
+document.querySelector('#calendar-1').addEventListener('click', getEndDate);
 function getEndDate(event) {
     document.querySelector('#end-date').setAttribute('end-day', event.target.getAttribute('data-day'));
     document.querySelector('#end-date').setAttribute('end-month', event.target.getAttribute('data-month'));

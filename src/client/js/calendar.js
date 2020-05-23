@@ -1,9 +1,9 @@
-function removeCalendar() {
-    document.querySelector('.calendar-days').innerHTML = "";
+function removeCalendar(index) {
+    document.querySelector(`.calendar-days-${index}`).innerHTML = "";
 }
 
-function showCalendar(year, month, offset) {
-    Client.removeCalendar();
+function loadCalendar(year, month, offset, index) {
+    Client.removeCalendar(index);
     const calendar = new Client.Calendar({
         siblingMonths: true,
         weekStart: true
@@ -33,18 +33,17 @@ function showCalendar(year, month, offset) {
             year = year + offset;
     }
 
-    const calendarMonthPrevious = document.querySelectorAll('.calendar-month-previous');
-    const calendarMonthCurrent = document.querySelectorAll('.calendar-month-current');
-    const calendarMonthNext = document.querySelectorAll('.calendar-month-next');
+    const calendarMonthPrevious = document.querySelector(`.calendar-month-previous-${index}`);
+    const calendarMonthCurrent = document.querySelector(`.calendar-month-current-${index}`);
+    const calendarMonthNext = document.querySelector(`.calendar-month-next-${index}`);
 
-    for (let i = 0; i < 2; i++) {
-        calendarMonthPrevious[i].textContent = Client.months[previousMonth];
-        calendarMonthCurrent[i].textContent = `${Client.months[currentMonth]} ${year}`;
-        calendarMonthCurrent[i].setAttribute('data-month', currentMonth);
-        calendarMonthCurrent[i].setAttribute('data-year', year);
-        calendarMonthNext[i].textContent = Client.months[nextMonth];
-    }
+    calendarMonthPrevious.textContent = Client.months[previousMonth];
+    calendarMonthCurrent.textContent = `${Client.months[currentMonth]} ${year}`;
+    calendarMonthCurrent.setAttribute('data-month', currentMonth);
+    calendarMonthCurrent.setAttribute('data-year', year);
+    calendarMonthNext.textContent = Client.months[nextMonth];
 
+    // Generate week days
     const calendarDaysFragment = document.createDocumentFragment();
     for (const day of Client.days) {
         const li = document.createElement('li');
@@ -52,7 +51,8 @@ function showCalendar(year, month, offset) {
         li.innerText = day;
         calendarDaysFragment.appendChild(li);
     }
-    
+
+    // Generate days of the month
     calendar
     .getCalendar(year, month)
     .forEach(date => {
@@ -67,13 +67,12 @@ function showCalendar(year, month, offset) {
         calendarDaysFragment.appendChild(li);
     });
 
-    const calendarDaysFragment2 = calendarDaysFragment.cloneNode(true);
-    const calendarList = document.querySelectorAll('.calendar-days');
-        calendarList[0].appendChild(calendarDaysFragment);
-        calendarList[1].appendChild(calendarDaysFragment2);
+    // Populate calendar
+    const calendarList = document.querySelector(`.calendar-days-${index}`);
+    calendarList.appendChild(calendarDaysFragment);
 }
 
 export { 
     removeCalendar,
-    showCalendar
+    loadCalendar
 }

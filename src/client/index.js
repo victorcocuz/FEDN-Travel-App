@@ -1,6 +1,6 @@
 import { testFunction } from './js/app'
 import { removeCalendar } from './js/calendar'
-import { showCalendar } from './js/calendar'
+import { loadCalendar } from './js/calendar'
 import { validateDates } from './js/validators'
 
 import { Calendar } from './js/globals'
@@ -16,7 +16,7 @@ import './styles/main.scss'
 export {
     testFunction,
     removeCalendar,
-    showCalendar,
+    loadCalendar,
 
     // Validators
     validateDates,
