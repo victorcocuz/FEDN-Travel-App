@@ -57,13 +57,14 @@ app.post('/geonames', sendCoordinates);
 function sendCoordinates (req, res) {
     // Start an IIFE to use `await` at the top level
     (async () => {
-        let coordinates = await getCoordinates(req.body.town);
+        let coordinates = await getCoordinates(req.body.tripDetails.town);
         res.send(coordinates);
     })();
 }
 
 // Call Geonames API:
 const getCoordinates = async (town) => {
+    console.log(town);
     const baseUrlGeonames = "http://api.geonames.org/searchJSON?"
     const paramsGeonames = new URLSearchParams({
         q: town,
@@ -71,7 +72,7 @@ const getCoordinates = async (town) => {
         username: GEONAMES_USER
     });
     const urlGeonames = `${baseUrlGeonames}${paramsGeonames.toString()}`;
-
+    // console.log(urlGeonames);
     const response = await fetch(urlGeonames);
     const result = await response.json();
     let newLocation = {};
@@ -82,7 +83,8 @@ const getCoordinates = async (town) => {
             lng: result.geonames[0].lng,
             countryCode: result.geonames[0].countryCode
         };
-        // console.log(newLocation);
+        console.log(result);
+        console.log(newLocation);
     } catch (error) {
         console.log('error:', error);
     };

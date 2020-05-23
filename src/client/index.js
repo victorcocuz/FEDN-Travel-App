@@ -1,7 +1,7 @@
-import { getMonth } from './js/calendar'
 import { testFunction } from './js/app'
 import { removeCalendar } from './js/calendar'
 import { showCalendar } from './js/calendar'
+import { validateDates } from './js/validators'
 
 import { Calendar } from './js/globals'
 import { months } from './js/globals'
@@ -15,9 +15,13 @@ import './styles/main.scss'
 
 export {
     testFunction,
-    getMonth,
     removeCalendar,
     showCalendar,
+
+    // Validators
+    validateDates,
+
+    // Globals
     Calendar,
     months,
     days,

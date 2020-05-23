@@ -1,17 +1,3 @@
-function getMonth(month, year) {
-    date = {};
-    for (let i = 0; i < Client.months.length; i++) {
-        if (month == Client.months[i]){
-            console.log(`month is ${month}`);
-            if (i == 0) {
-                return Client.months.length - 1;
-
-            }
-            return i;
-        }
-    }
-}
-
 function removeCalendar() {
     document.querySelector('.calendar-days').innerHTML = "";
 }
@@ -47,14 +33,17 @@ function showCalendar(year, month, offset) {
             year = year + offset;
     }
 
-    const calendarMonthPrevious = document.querySelector('.calendar-month-previous');
-    const calendarMonthCurrent = document.querySelector('.calendar-month-current');
-    const calendarMonthNext = document.querySelector('.calendar-month-next');
-    calendarMonthPrevious.textContent = Client.months[previousMonth];
-    calendarMonthCurrent.textContent = `${Client.months[currentMonth]} ${year}`;
-    calendarMonthCurrent.setAttribute('data-month', currentMonth);
-    calendarMonthCurrent.setAttribute('data-year', year);
-    calendarMonthNext.textContent = Client.months[nextMonth];
+    const calendarMonthPrevious = document.querySelectorAll('.calendar-month-previous');
+    const calendarMonthCurrent = document.querySelectorAll('.calendar-month-current');
+    const calendarMonthNext = document.querySelectorAll('.calendar-month-next');
+
+    for (let i = 0; i < 2; i++) {
+        calendarMonthPrevious[i].textContent = Client.months[previousMonth];
+        calendarMonthCurrent[i].textContent = `${Client.months[currentMonth]} ${year}`;
+        calendarMonthCurrent[i].setAttribute('data-month', currentMonth);
+        calendarMonthCurrent[i].setAttribute('data-year', year);
+        calendarMonthNext[i].textContent = Client.months[nextMonth];
+    }
 
     const calendarDaysFragment = document.createDocumentFragment();
     for (const day of Client.days) {
@@ -78,12 +67,13 @@ function showCalendar(year, month, offset) {
         calendarDaysFragment.appendChild(li);
     });
 
-    const calendarList = document.querySelector('.calendar-days');
-    calendarList.appendChild(calendarDaysFragment);
+    const calendarDaysFragment2 = calendarDaysFragment.cloneNode(true);
+    const calendarList = document.querySelectorAll('.calendar-days');
+        calendarList[0].appendChild(calendarDaysFragment);
+        calendarList[1].appendChild(calendarDaysFragment2);
 }
 
 export { 
-    getMonth,
     removeCalendar,
     showCalendar
 }
