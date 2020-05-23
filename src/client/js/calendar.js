@@ -1,13 +1,10 @@
-function removeCalendar(index) {
-    document.querySelector(`.calendar-days-${index}`).innerHTML = "";
-}
-
 function loadCalendar(year, month, offset, index) {
-    Client.removeCalendar(index);
     const calendar = new Client.Calendar({
         siblingMonths: true,
         weekStart: true
     });
+
+    Client.removeCalendar(index);
 
     let currentMonth = month + offset;
     let previousMonth;
@@ -53,23 +50,67 @@ function loadCalendar(year, month, offset, index) {
     }
 
     // Generate days of the month
-    calendar
-    .getCalendar(year, month)
-    .forEach(date => {
-        const li = document.createElement('li');
-        if (date) {
-            li.className = 'calendar-day' + (date.siblingMonth ? ' sibling-month' : '');
-            li.setAttribute('data-day', date.day);
-            li.setAttribute('data-month', date.month);
-            li.setAttribute('data-year', date.year);
-            li.innerHTML = date.day;
-        }
-        calendarDaysFragment.appendChild(li);
-    });
+    const currentMonthCalendarLength = calendar.getCalendar(year, currentMonth).length;
+    if (currentMonthCalendarLength == 28 ) {
+        getCalendarDays(calendarDaysFragment, calendar, year, currentMonth, Client.PREVIOUS);
+    }
+    getCalendarDays(calendarDaysFragment, calendar, year, currentMonth, Client.CURRENT);
+    if (currentMonthCalendarLength < 42) {
+        getCalendarDays(calendarDaysFragment, calendar, year, currentMonth, Client.NEXT);
+    }
 
     // Populate calendar
     const calendarList = document.querySelector(`.calendar-days-${index}`);
     calendarList.appendChild(calendarDaysFragment);
+}
+
+function removeCalendar(index) {
+    document.querySelector(`.calendar-days-${index}`).innerHTML = "";
+}
+
+function getCalendarDays(calendarDaysFragment, calendar, year, currentMonth, offset){
+    const calendarMonth = calendar.getCalendar(year, currentMonth + offset);
+    let min, max;
+
+    switch (offset) {
+        case Client.PREVIOUS:
+            min = calendarMonth.length - 7;
+            max = calendarMonth.length;
+            break;
+        case Client.CURRENT:
+            min = 0;
+            max = calendarMonth.length;
+            break;
+        case Client.NEXT:
+            if (calendarMonth[0].siblingMonth) {
+                min = 7;
+                max = 14;
+            } else {
+                min = 0;
+                max = 7;
+            }
+            break;
+    }
+
+    for (let index = min; index < max; index++) {
+        if (calendarMonth[index]) {
+            calendarDaysFragment.appendChild(createCalendarDays(calendarMonth[index], offset));
+        }
+    }
+}
+
+function createCalendarDays(date, offset) {
+    const li = document.createElement('li');
+    if (offset == Client.PREVIOUS || offset == Client.NEXT || date.siblingMonth) {
+        li.className = 'calendar-day sibling-month';
+    } else {
+        li.className = 'calendar-day';
+    }
+    li.setAttribute('data-day', date.day);
+    li.setAttribute('data-month', date.month);
+    li.setAttribute('data-year', date.year);
+    li.innerHTML = date.day;
+    return li;
 }
 
 export { 

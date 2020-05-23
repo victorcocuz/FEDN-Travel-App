@@ -6,20 +6,24 @@ function validateDates(tripDetails) {
         { year: tripDetails.startYear, month: tripDetails.startMonth, day: tripDetails.startDay },
         { year: today.getFullYear(), month: today.getMonth(), day: today.getDate()}
     );
+
     if (presentDiff < 0) {
         alert ('Start date of your trip cannot be in the past!');
-        return false;
-    }    
+        return 0;
+    }
     const datesDiff = Calendar.diff(
         { year: tripDetails.endYear, month: tripDetails.endMonth, day: tripDetails.endDay },
         { year: tripDetails.startYear, month: tripDetails.startMonth, day: tripDetails.startDay }
     )
     if (datesDiff < 1 ) {
         alert('End date of your trip cannot be before the trip begins!');
-        return false;
+        return 0;
+    }
+    if (presentDiff > 15) {
+        return 2;
     }
 
-    return true;
+    return 1;
 }
 
 export {

@@ -43,7 +43,11 @@ header {
             &.calendar-day:hover {
                 background-color: blue;
             }
+
+            &.selected-0,
+            &.selected-1 {
+                background-color: green;
+            }
         }
     }
 }
-
