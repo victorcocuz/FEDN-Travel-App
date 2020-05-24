@@ -47,6 +47,7 @@ document.querySelector('#town-submit').addEventListener('click', testFunction);
 function testFunction(event) {
     event.preventDefault()
 
+    // Get trip details from user input
     const tripDetails = {
         town : document.querySelector('#town').value,
         startDay : document.querySelector('#date-0').getAttribute('day-0'),
@@ -56,29 +57,53 @@ function testFunction(event) {
         endMonth : document.querySelector('#date-1').getAttribute('month-1'),
         endYear : document.querySelector('#date-1').getAttribute('year-1')
     }
-    // console.log(Client.validateDates(tripDetails));
 
     if (Client.validateDates(tripDetails) == 1) {
-        getCoordinates(`${localUrl}/getTripDetails`, tripDetails);
+        (async () => {
+            // Call server to fetch location coordinates from the api
+            let coordinates = await getData(`${localUrl}/getLocation`, tripDetails.town);
+            console.log(`latitude is ${JSON.stringify({coordinates: coordinates})}`);
+
+            const weatherbitData = {
+                lat: coordinates.lat,
+                lng: coordinates.lng,
+                startDay: tripDetails.startDay,
+                startMonth: parseInt(tripDetails.startMonth) + 1,
+                startyear: tripDetails.startYear,
+                endDay: tripDetails.endDay,
+                endMonth: parseInt(tripDetails.endMonth) + 1,
+                endYear: tripDetails.endYear
+            };
+            console.log(`weather data is ${JSON.stringify({data : weatherbitData})}`);
+
+            // Call server to fetch normal weather forecast for given dates
+            let weatherForecastNormal = await getData(`${localUrl}/getWeatherNormal`, weatherbitData);
+            console.log(`weather forecast normal is ${JSON.stringify({normalforecast: weatherForecastNormal})}`);
+
+            // Call server to fetch daily forecast for the next 16 days
+            // let weatherForecastDaily = await getData(`${localUrl}/getWeatherDaily`, weatherbitData);
+            // console.log(`weather forecast normal is ${JSON.stringify({dailyforecast: weatherForecastDaily})}`);
+
+            // Call server to fetch photos for given location
+            // let photos = await getData(`${localUrl}/getWeatherDaily`, tripDetails.town);
+            // console.log(`photos are ${JSON.stringify({photos: photos})}`);
+        })();
     }
-    // console.log(tripDetails);
 };
 
-const getCoordinates = async (url, tripDetails) => {
+const getData = async (url, data) => {
     const response = await fetch(url, {
         method: 'POST',
-        credentials: 'same-origin',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({tripDetails: tripDetails})
-    }).then(function(data){
-        return data.json();
-    }).then(function(data){
-        console.log(data);
-    }).catch((error) => {
-        console.error('Error:', error);
+        body: JSON.stringify({data: data})
     });
+    try {
+        return await response.json();
+    } catch(error) {
+        console.log("error", error);
+    }
 }
 
 export { 
