@@ -57,19 +57,24 @@ document.querySelector('#town-submit').addEventListener('click', (event) => {
     }
 
     // If validation failed, return
-    if (Client.validateDates(tripDetails) == 0) {
+    if (!Client.validateTown(tripDetails.town) || !Client.validateDates(tripDetails)) {
         return;
     };
 
     // If validation passed, get location coordinates, normal weather and photos
     (async () => {
         // Call server to fetch location coordinates from the api
-        let coordinates = await getData(`${localUrl}/getLocation`, tripDetails.town);
-        console.log(`latitude is ${JSON.stringify({coordinates: coordinates})}`);
+        let location = await getData(`${localUrl}/getLocation`, tripDetails.town);
+        Client.updateLocation(location);
+        // console.log(`coordinats are ${JSON.stringify({location: location})}`);
 
+        const startDate = Client.filterStartDateForWeather(tripDetails);
+        const endDate = Client.filterEndDateForWeather(tripDetails);
+        console.log(`start date is ${startDate}`);
+        console.log(`end date is ${endDate}`);
         const weatherbitData = {
-            lat: coordinates.lat,
-            lng: coordinates.lng,
+            lat: location.lat,
+            lng: location.lng,
             startDay: tripDetails.startDay,
             startMonth: parseInt(tripDetails.startMonth) + 1,
             startyear: tripDetails.startYear,
@@ -78,22 +83,25 @@ document.querySelector('#town-submit').addEventListener('click', (event) => {
             endYear: tripDetails.endYear
         };
 
+        // If trip starts in less than 16 days get the daily forecast
+        let weatherForecastDaily;
+        if (startDate < 16) {
+            // Call server to fetch daily forecast for the next 16 days
+            weatherForecastDaily = await getData(`${localUrl}/getWeatherDaily`, weatherbitData);
+            // console.log(`weather forecast daily is ${JSON.stringify({dailyforecast: weatherForecastDaily})}`);
+        };
+
         // Call server to fetch normal weather forecast for given dates
         let weatherForecastNormal = await getData(`${localUrl}/getWeatherNormal`, weatherbitData);
-        console.log(`weather forecast normal is ${JSON.stringify({normalforecast: weatherForecastNormal})}`);
+        // console.log(`weather forecast normal is ${JSON.stringify({normalforecast: weatherForecastNormal})}`);
+        
+        Client.updateWeather(weatherForecastDaily, weatherForecastNormal, startDate, endDate);
 
         // Call server to fetch photos for given location
-        let photos = await getData(`${localUrl}/getPhotos`, tripDetails.town);
-
-        console.log(`photos are ${JSON.stringify({photos: photos})}`);
+        // let photos = await getData(`${localUrl}/getPhotos`, tripDetails.town);
+        // Client.updatePhotos(photos);
+        // console.log(`photos are ${JSON.stringify({photos: photos})}`);
     })();
-
-    // If trip starts in less than 16 days get the daily forecast
-    if (Client.validateDates(tripDetails) == 1) {
-        // Call server to fetch daily forecast for the next 16 days
-        // let weatherForecastDaily = await getData(`${localUrl}/getWeatherDaily`, weatherbitData);
-        // console.log(`weather forecast normal is ${JSON.stringify({dailyforecast: weatherForecastDaily})}`);
-    };
 });
 
 const getData = async (url, data) => {

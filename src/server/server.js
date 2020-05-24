@@ -55,41 +55,18 @@ app.post('/getLocation', (req, res) => {
         const response = await fetch(urlGeonames);
         try {
             const result = await response.json();
+            const firstResult = result.geonames[0];
             location = {
-                lat: result.geonames[0].lat,
-                lng: result.geonames[0].lng,
-                countryCode: result.geonames[0].countryCode
+                lat: firstResult.lat,
+                lng: firstResult.lng,
+                countryCode: firstResult.countryCode,
+                toponymName: firstResult.toponymName,
+                countryName: firstResult.countryName
             };
         } catch (error) {
             console.log('error:', error);
         };
         res.send(location);   
-    })();
-});
-
-// Route to get photos for a given location from Pixabay API
-app.post('/getPhotos', (req, res) => {
-    const baseUrlPixelbay = "http://pixabay.com/api/?";
-    const paramsPixelbay = new URLSearchParams({
-        q: req.body.data,
-        key: PIXELBAY_API_KEY,
-        image_type: 'photo',
-        per_page: '5'
-    });
-    const urlPixelBay = `${baseUrlPixelbay}${paramsPixelbay.toString()}`;
-    let photoUrls = [];
-
-    (async () => {
-        const response = await fetch(urlPixelBay);
-        try {
-            const result = await response.json();
-            for (const photo of result.hits) {
-                photoUrls.push(photo.largeImageURL)
-            };
-        } catch (error) {
-            console.log('error:', error);
-        };
-        res.send(photoUrls);   
     })();
 });
 
@@ -116,7 +93,7 @@ app.post('/getWeatherNormal', (req, res) => {
             for (const dayForecast of result.data) {
                 const item = {
                     temp: dayForecast.temp,
-                    min_temp: dayForecast.low_temp,
+                    min_temp: dayForecast.min_temp,
                     max_temp: dayForecast.max_temp,
                     wind_spd: dayForecast.wind_spd,
                     precip: dayForecast.precip,
@@ -153,7 +130,7 @@ app.post('/getWeatherDaily', (req, res) => {
             for (const dayForecast of result.data) {
                 const item = {
                     temp: dayForecast.temp,
-                    min_temp: dayForecast.low_temp,
+                    min_temp: dayForecast.min_temp,
                     max_temp: dayForecast.max_temp,
                     wind_spd: dayForecast.wind_spd,
                     precip: dayForecast.precip,
