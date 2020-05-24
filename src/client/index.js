@@ -1,4 +1,4 @@
-import { testFunction } from './js/app'
+import {} from './js/app'
 import { removeCalendar } from './js/calendar'
 import { loadCalendar } from './js/calendar'
 import { validateDates } from './js/validators'
@@ -14,14 +14,14 @@ import './styles/normalize.scss'
 import './styles/main.scss'
 
 export {
-    testFunction,
+    // Calendar.js
     removeCalendar,
     loadCalendar,
 
-    // Validators
+    // Validators.js
     validateDates,
 
-    // Globals
+    // Globals.js
     Calendar,
     months,
     days,

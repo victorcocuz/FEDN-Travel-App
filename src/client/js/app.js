@@ -41,10 +41,8 @@ for (let index = 0; index < 2; index++) {
     });
 }
 
-// CALL API
-document.querySelector('#town-submit').addEventListener('click', testFunction);
-
-function testFunction(event) {
+// Get trip details when the user submits info
+document.querySelector('#town-submit').addEventListener('click', (event) => {
     event.preventDefault()
 
     // Get trip details from user input
@@ -58,38 +56,45 @@ function testFunction(event) {
         endYear : document.querySelector('#date-1').getAttribute('year-1')
     }
 
+    // If validation failed, return
+    if (Client.validateDates(tripDetails) == 0) {
+        return;
+    };
+
+    // If validation passed, get location coordinates, normal weather and photos
+    (async () => {
+        // Call server to fetch location coordinates from the api
+        let coordinates = await getData(`${localUrl}/getLocation`, tripDetails.town);
+        console.log(`latitude is ${JSON.stringify({coordinates: coordinates})}`);
+
+        const weatherbitData = {
+            lat: coordinates.lat,
+            lng: coordinates.lng,
+            startDay: tripDetails.startDay,
+            startMonth: parseInt(tripDetails.startMonth) + 1,
+            startyear: tripDetails.startYear,
+            endDay: tripDetails.endDay,
+            endMonth: parseInt(tripDetails.endMonth) + 1,
+            endYear: tripDetails.endYear
+        };
+
+        // Call server to fetch normal weather forecast for given dates
+        let weatherForecastNormal = await getData(`${localUrl}/getWeatherNormal`, weatherbitData);
+        console.log(`weather forecast normal is ${JSON.stringify({normalforecast: weatherForecastNormal})}`);
+
+        // Call server to fetch photos for given location
+        let photos = await getData(`${localUrl}/getPhotos`, tripDetails.town);
+
+        console.log(`photos are ${JSON.stringify({photos: photos})}`);
+    })();
+
+    // If trip starts in less than 16 days get the daily forecast
     if (Client.validateDates(tripDetails) == 1) {
-        (async () => {
-            // Call server to fetch location coordinates from the api
-            let coordinates = await getData(`${localUrl}/getLocation`, tripDetails.town);
-            console.log(`latitude is ${JSON.stringify({coordinates: coordinates})}`);
-
-            const weatherbitData = {
-                lat: coordinates.lat,
-                lng: coordinates.lng,
-                startDay: tripDetails.startDay,
-                startMonth: parseInt(tripDetails.startMonth) + 1,
-                startyear: tripDetails.startYear,
-                endDay: tripDetails.endDay,
-                endMonth: parseInt(tripDetails.endMonth) + 1,
-                endYear: tripDetails.endYear
-            };
-            console.log(`weather data is ${JSON.stringify({data : weatherbitData})}`);
-
-            // Call server to fetch normal weather forecast for given dates
-            let weatherForecastNormal = await getData(`${localUrl}/getWeatherNormal`, weatherbitData);
-            console.log(`weather forecast normal is ${JSON.stringify({normalforecast: weatherForecastNormal})}`);
-
-            // Call server to fetch daily forecast for the next 16 days
-            // let weatherForecastDaily = await getData(`${localUrl}/getWeatherDaily`, weatherbitData);
-            // console.log(`weather forecast normal is ${JSON.stringify({dailyforecast: weatherForecastDaily})}`);
-
-            // Call server to fetch photos for given location
-            // let photos = await getData(`${localUrl}/getWeatherDaily`, tripDetails.town);
-            // console.log(`photos are ${JSON.stringify({photos: photos})}`);
-        })();
-    }
-};
+        // Call server to fetch daily forecast for the next 16 days
+        // let weatherForecastDaily = await getData(`${localUrl}/getWeatherDaily`, weatherbitData);
+        // console.log(`weather forecast normal is ${JSON.stringify({dailyforecast: weatherForecastDaily})}`);
+    };
+});
 
 const getData = async (url, data) => {
     const response = await fetch(url, {
@@ -105,7 +110,3 @@ const getData = async (url, data) => {
         console.log("error", error);
     }
 }
-
-export { 
-    testFunction
- }

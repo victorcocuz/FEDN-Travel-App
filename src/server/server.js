@@ -40,7 +40,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.resolve('dist/index.html'));
 });
 
-// Routes
+// Route to get location details from Geonames API
 app.post('/getLocation', (req, res) => {
     const baseUrlGeonames = "http://api.geonames.org/searchJSON?";
     const paramsGeonames = new URLSearchParams({
@@ -49,13 +49,13 @@ app.post('/getLocation', (req, res) => {
         username: GEONAMES_USER
     });
     const urlGeonames = `${baseUrlGeonames}${paramsGeonames.toString()}`;
-    let newLocation = {};
+    let location = {};
 
     (async () => {
         const response = await fetch(urlGeonames);
         try {
             const result = await response.json();
-            newLocation = {
+            location = {
                 lat: result.geonames[0].lat,
                 lng: result.geonames[0].lng,
                 countryCode: result.geonames[0].countryCode
@@ -63,10 +63,37 @@ app.post('/getLocation', (req, res) => {
         } catch (error) {
             console.log('error:', error);
         };
-        res.send(newLocation);   
+        res.send(location);   
     })();
 });
 
+// Route to get photos for a given location from Pixabay API
+app.post('/getPhotos', (req, res) => {
+    const baseUrlPixelbay = "http://pixabay.com/api/?";
+    const paramsPixelbay = new URLSearchParams({
+        q: req.body.data,
+        key: PIXELBAY_API_KEY,
+        image_type: 'photo',
+        per_page: '5'
+    });
+    const urlPixelBay = `${baseUrlPixelbay}${paramsPixelbay.toString()}`;
+    let photoUrls = [];
+
+    (async () => {
+        const response = await fetch(urlPixelBay);
+        try {
+            const result = await response.json();
+            for (const photo of result.hits) {
+                photoUrls.push(photo.largeImageURL)
+            };
+        } catch (error) {
+            console.log('error:', error);
+        };
+        res.send(photoUrls);   
+    })();
+});
+
+// Route to get normal weather for a given location and time period from Weatherbit API
 app.post('/getWeatherNormal', (req, res) => {
     const baseUrlForecastNormal = "http://api.weatherbit.io/v2.0/normals?";
     const data = req.body.data;
@@ -107,6 +134,7 @@ app.post('/getWeatherNormal', (req, res) => {
     })();
 });
 
+// Route to get daily weather for the following 16 days for a given location and time period from Weatherbit API
 app.post('/getWeatherDaily', (req, res) => {
     const baseUrlForecastDaily = "http://api.weatherbit.io/v2.0/forecast/daily?";
     const data = req.body.data;
