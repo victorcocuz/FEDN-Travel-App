@@ -61,7 +61,8 @@ app.post('/getLocation', (req, res) => {
                 lng: firstResult.lng,
                 countryCode: firstResult.countryCode,
                 toponymName: firstResult.toponymName,
-                countryName: firstResult.countryName
+                countryName: firstResult.countryName,
+                population: firstResult.population
             };
         } catch (error) {
             console.log('error:', error);

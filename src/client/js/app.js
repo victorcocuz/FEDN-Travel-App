@@ -1,17 +1,14 @@
+/*******************************************************************************************************
+Imports and variables
+********************************************************************************************************/
 const localUrl = `//localhost:${process.env.PORT}`;
 const today = new Date();
 const currentMonth = [];
 
-// Add calendar
-function showCalendar(offset, index) {
-        Client.loadCalendar(
-            parseInt(currentMonth[index].getAttribute('data-year')),
-            parseInt(currentMonth[index].getAttribute('data-month')),
-            offset,
-            index
-        );
-}
 
+/*******************************************************************************************************
+Add calendars
+********************************************************************************************************/
 // Loop through calendars
 for (let index = 0; index < 2; index++) {
     // Add event listeners for calendar
@@ -41,6 +38,9 @@ for (let index = 0; index < 2; index++) {
     });
 }
 
+/*******************************************************************************************************
+Process submitted data
+********************************************************************************************************/
 // Get trip details when the user submits info
 document.querySelector('#town-submit').addEventListener('click', (event) => {
     event.preventDefault()
@@ -70,8 +70,6 @@ document.querySelector('#town-submit').addEventListener('click', (event) => {
 
         const startDate = Client.filterStartDateForWeather(tripDetails);
         const endDate = Client.filterEndDateForWeather(tripDetails);
-        console.log(`start date is ${startDate}`);
-        console.log(`end date is ${endDate}`);
         const weatherbitData = {
             lat: location.lat,
             lng: location.lng,
@@ -103,6 +101,19 @@ document.querySelector('#town-submit').addEventListener('click', (event) => {
         // console.log(`photos are ${JSON.stringify({photos: photos})}`);
     })();
 });
+
+/*******************************************************************************************************
+Helper methods
+********************************************************************************************************/
+// Add calendar
+function showCalendar(offset, index) {
+    Client.loadCalendar(
+        parseInt(currentMonth[index].getAttribute('data-year')),
+        parseInt(currentMonth[index].getAttribute('data-month')),
+        offset,
+        index
+    );
+}
 
 const getData = async (url, data) => {
     const response = await fetch(url, {
