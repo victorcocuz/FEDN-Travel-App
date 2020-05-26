@@ -57,16 +57,17 @@ app.post('/getLocation', (req, res) => {
             const result = await response.json();
             const firstResult = result.geonames[0];
             location = {
-                lat: firstResult.lat,
-                lng: firstResult.lng,
-                countryCode: firstResult.countryCode,
                 toponymName: firstResult.toponymName,
                 countryName: firstResult.countryName,
-                population: firstResult.population
+                countryCode: firstResult.countryCode,
+                population: firstResult.population,
+                lat: firstResult.lat,
+                lng: firstResult.lng
             };
         } catch (error) {
             console.log('error:', error);
         };
+        console.log(location);
         res.send(location);   
     })();
 });
@@ -75,7 +76,6 @@ app.post('/getLocation', (req, res) => {
 app.post('/getWeatherNormal', (req, res) => {
     const baseUrlForecastNormal = "http://api.weatherbit.io/v2.0/normals?";
     const data = req.body.data;
-    console.log(`data is ${JSON.stringify({data: data})}`);
     const paramsWeatherbit = new URLSearchParams({
         lat: data.lat,
         lon: data.lng,
@@ -146,5 +146,32 @@ app.post('/getWeatherDaily', (req, res) => {
         };
         console.log(newWeatherDaily);
         res.send(newWeatherDaily);   
+    })();
+});
+
+// Route to get photos for a given location from Pixabay API
+app.post('/getPhotos', (req, res) => {
+    const baseUrlPixelbay = "http://pixabay.com/api/?";
+    const paramsPixelbay = new URLSearchParams({
+        q: req.body.data,
+        key: PIXELBAY_API_KEY,
+        image_type: 'photo',
+        per_page: '6'
+    });
+    const urlPixelBay = `${baseUrlPixelbay}${paramsPixelbay.toString()}`;
+    let photoUrls = [];
+
+    (async () => {
+        const response = await fetch(urlPixelBay);
+        try {
+            const result = await response.json();
+            for (const photo of result.hits) {
+                photoUrls.push(photo.largeImageURL)
+            };
+        } catch (error) {
+            console.log('error:', error);
+        };
+        console.log(photoUrls);
+        res.send(photoUrls);   
     })();
 });

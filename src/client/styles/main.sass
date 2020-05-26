@@ -2,55 +2,9 @@
 @import './normalize'
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap')
 @import './resets'
-
-html
-    overflow-y: scroll
-    width: 100%
-    background-color: resources.$color-accent-bright
-
-$calendar-size: 3rem
-
-header
-    padding: 0
-    margin: 0
-    color: red
-    font-weight: 400
-    font-size: 2rem
-
-.calendar
-    width: calc(#{$calendar-size} * 7)
-    height: auto
-
-    .months
-        display: flex
-        width: 100%
-        height: auto
-        flex-direction: row
-        justify-content: space-between
-        border: 1px solid red
-
-    ul
-        width: 100%
-        height: calc(#{$calendar-size} * 7)
-        border: 1px solid red
-        display: flex
-        flex-flow: row wrap
-        justify-content: flex-start
-        align-content: flex-start
-    
-        li
-            height: $calendar-size
-            width: $calendar-size
-            display: flex
-            justify-content: center
-            align-items: center
-
-            &.sibling-month 
-                color: grey
-    
-            &.calendar-day:hover
-                background-color: blue
-
-            &.selected-0
-            &.selected-1
-                background-color: green
+@import './grids'
+@import './layouts/header'
+@import './layouts/sections'
+@import './layouts/footer'
+@import './components'
+@import './responsive'

@@ -1,6 +1,22 @@
+@use 'resources'
+
 *
     font-family: 'Open Sans', sans-serif
-    border: 1px solid red
+    color: resources.$color-dark
+    // border: 1px solid red
+
+html
+    overflow-y: scroll
+    width: 100%
+    background-color: resources.$color-accent-bright
+
+input,
+input[type="submit"]
+    display: block
+    text-decoration: none
+    appearance: none
+    -webkit-appearance: none
+    -moz-appearance: none
 
 a
     text-decoration: none
@@ -8,6 +24,7 @@ a
 
 ul
     padding: 0
+    margin: 0
 
 li
     list-style-type: none
@@ -15,3 +32,12 @@ li
 p
     margin: 0
     padding: 0
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6
+    margin: 0
+    color: resources.$color-dark

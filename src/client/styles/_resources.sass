@@ -1,6 +1,42 @@
-$color-primary: rgb(216, 216, 216)
-$color-primary-dark: rgb(0, 206, 203)
+$color-primary: rgb(235, 235, 235)
+$color-primary-medium: rgb(216, 216, 216)
+$color-primary-dark: rgb(0, 180, 177)
+$color-primary-darker: rgb(0, 148, 145)
 $color-accent: rgb(255, 237, 102)
 $color-accent-bright: rgb(255, 255, 234)
-$color-primary-red: rgb(255, 94, 91)
+$color-secondary: rgb(255, 94, 91)
 $color-dark: rgb(0, 0, 35)
+
+$shadow-color: rgba(0,0,0,0.16)
+$shadow-color-dark: rgba(0,0,0,0.4)
+
+$box-shadow: 0 2px 4px $shadow-color, 0 2px 4px $shadow-color
+$box-shadow-small: 0 1px 3px $shadow-color, 0 1px 3px $shadow-color
+$box-shadow-bottom: 0 4px 2px -2px $shadow-color
+$box-inset: inset 0 1px 1px $color-primary-dark
+
+$calendar-day-size: 3rem
+$calendar-size: calc(#{$calendar-day-size} * 7)
+
+%trip-detail-card
+    background-color: white
+    padding: 0.5rem
+    box-shadow: $box-shadow
+
+%trip-detail-input
+    padding: 0.5rem
+    border: 1px solid $shadow-color-dark
+    border-radius: 0.25rem
+    box-shadow: $box-shadow
+    margin: 0.5rem
+
+%trip-weather-card
+    background-color: $color-primary
+    margin: 0.5rem
+    box-shadow: $box-shadow
+
+%trip-info-item
+    font-size: 1rem
+    font-weight: 500
+    line-height: 1.5rem
+    text-align: center

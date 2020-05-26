@@ -26,6 +26,7 @@ import { formatDay } from './js/helpers'
 import './styles/main.sass'
 
 // Media Imports
+import logo from './media/logo/logo_sample.png'
 import icon_a01d from './media/icons/a01d.png';
 import icon_a02d from './media/icons/a02d.png';
 import icon_a03d from './media/icons/a03d.png';
@@ -58,7 +59,6 @@ import icon_t03d from './media/icons/t03d.png';
 import icon_t04d from './media/icons/t04d.png';
 import icon_t05d from './media/icons/t05d.png';
 import icon_u00d from './media/icons/u00d.png';
-import icon_na from './media/icons/na.png';
 
 const icons = {
     icon_a01d: icon_a01d,
@@ -93,7 +93,6 @@ const icons = {
     icon_t04d: icon_t04d,
     icon_t05d: icon_t05d,
     icon_u00d: icon_u00d,
-    icon_na: icon_na
     };
 
 export {
@@ -124,5 +123,6 @@ export {
     NEXT,
 
     // Icons
+    logo,
     icons
 }

@@ -14,6 +14,7 @@ for (let index = 0; index < 2; index++) {
     // Add event listeners for calendar
     currentMonth[index] = document.querySelector(`.calendar-month-current-${index}`);
     window.addEventListener('load', () => {
+        document.querySelector('.logo').src = Client.logo // Add logo
         currentMonth[index].setAttribute('data-year', today.getFullYear());
         currentMonth[index].setAttribute('data-month', today.getMonth());
         showCalendar(Client.CURRENT, index);
@@ -96,8 +97,8 @@ document.querySelector('#town-submit').addEventListener('click', (event) => {
         Client.updateWeather(weatherForecastDaily, weatherForecastNormal, startDate, endDate);
 
         // Call server to fetch photos for given location
-        // let photos = await getData(`${localUrl}/getPhotos`, tripDetails.town);
-        // Client.updatePhotos(photos);
+        let photos = await getData(`${localUrl}/getPhotos`, tripDetails.town);
+        Client.updatePhotos(photos);
         // console.log(`photos are ${JSON.stringify({photos: photos})}`);
     })();
 });

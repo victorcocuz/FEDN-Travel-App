@@ -3,11 +3,21 @@ Update INDEX.HTML with data from API
 ********************************************************************************************************/
 // Update index.html with location data
 function updateLocation(location) {
+    const tripLocationElement = document.querySelector('#trip-location');
+    tripLocationElement.innerHTML = ""
     const tripLocationFragment = document.createDocumentFragment();
-    Object.keys(location).forEach((key) => {
+    const locationInfo = [
+        `City: ${location.toponymName}`,
+        `Country: ${location.countryName}`,
+        `Country Code: ${location.countryCode}`,
+        `Population: ${location.population}`,
+        `Latitude: ${location.lat}`,
+        `Longitude: ${location.lng}`
+    ]
+    locationInfo.forEach(item => {
         const li = document.createElement('li');
         li.className = 'trip-location-details';
-        li.innerText = location[key];
+        li.innerText = item;
         tripLocationFragment.appendChild(li);
     });
     document.querySelector('#trip-location').appendChild(tripLocationFragment);
@@ -15,6 +25,8 @@ function updateLocation(location) {
 
 // Update index.html with weather data
 function updateWeather(weatherForecastDaily, weatherForecastNormal, startDate, endDate) {
+    const tripWeatherElement = document.querySelector('#trip-weather');
+    tripWeatherElement.innerHTML = "";
     const weatherFragment = document.createDocumentFragment();
     if (startDate < 16) {
         for (let index = startDate; index < Math.min(endDate, 16); index++) {
@@ -33,18 +45,20 @@ function updateWeather(weatherForecastDaily, weatherForecastNormal, startDate, e
             weatherFragment.appendChild(divWeatherCard);
         }
     }
-    document.querySelector('#trip-weather').appendChild(weatherFragment);
+    tripWeatherElement.appendChild(weatherFragment);
 }
 
 // Update index.html with photos data
 function updatePhotos(photos) {
+    const tripPhotosElement = document.querySelector('#trip-photos');
+    tripPhotosElement.innerHTML = "";
     const photoLocationFragment = document.createDocumentFragment();
     for (const photo of photos) {
         const img = document.createElement('img');
         img.src = photo;
         photoLocationFragment.appendChild(img);
     }
-    document.querySelector('#trip-photos').appendChild(photoLocationFragment);
+    tripPhotosElement.appendChild(photoLocationFragment);
 }
 
 export {
@@ -86,7 +100,7 @@ function createWeatherCard(weatherForecast, index, daily) {
         imgWeatherIcon.alt = weatherForecast[index].weather.description;
         divWeatherDescription.textContent = weatherForecast[index].weather.description;
     } else {
-        imgWeatherIcon.src = icons[`icon_na`];
+        imgWeatherIcon.src = icons[`icon_c02d`];
         imgWeatherIcon.alt = 'Not Applicable';
         divWeatherDescription.textContent = 'Historic Data';
     }
@@ -100,16 +114,10 @@ function createWeatherCard(weatherForecast, index, daily) {
     divWeatherCard.appendChild(divWeatherTemp);
     
     // Update min temperature
-    const divWeatherTempMin = document.createElement('div');
-    divWeatherTempMin.classList.add('weather-temp-min');
-    divWeatherTempMin.textContent = `${weatherForecast[index].min_temp}${String.fromCharCode(176)}C`;
-    divWeatherCard.appendChild(divWeatherTempMin);
-
-    // Update max temperature
-    const divWeatherTempMax = document.createElement('div');
-    divWeatherTempMax.classList.add('weather-temp-max');
-    divWeatherTempMax.textContent = `${weatherForecast[index].max_temp}${String.fromCharCode(176)}C`;
-    divWeatherCard.appendChild(divWeatherTempMax);
+    const divWeatherTempRange = document.createElement('div');
+    divWeatherTempRange.classList.add('weather-temp-range');
+    divWeatherTempRange.textContent = `${weatherForecast[index].min_temp}${String.fromCharCode(176)}C - ${weatherForecast[index].max_temp}${String.fromCharCode(176)}C`;
+    divWeatherCard.appendChild(divWeatherTempRange);
 
     return divWeatherCard;
 }

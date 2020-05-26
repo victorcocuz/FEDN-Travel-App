@@ -1,0 +1,84 @@
+@use './resources'
+
+h2
+    width: calc(#{resources.$calendar-size} + 1rem)
+    font-size: 1rem
+    font-weight: 700
+    margin: 1.25rem 0 0.5rem
+
+form h2
+    margin-bottom: 0
+    
+.calendar
+    @extend %trip-detail-input
+    width: resources.$calendar-size
+    background-color: resources.$color-primary
+    height: auto
+    border-radius: 0.25rem
+
+    .months
+        display: flex
+        width: 100%
+        height: 2.5rem
+        flex-direction: row
+        justify-content: space-between
+        align-items: center
+        background-color: resources.$color-primary-medium
+        border-bottom: 1px solid resources.$shadow-color-dark
+        border-radius: 0.25rem
+        box-shadow: resources.$box-shadow-bottom
+
+        .calendar-month
+            display: flex
+            flex-direction: row
+            align-items: center
+            font-weight: 700
+            height: 100%
+            padding: 0 0.5rem 0
+
+            &:not(.disable):hover
+                background-color: resources.$color-primary-dark
+                cursor: pointer
+                color: resources.$color-accent-bright
+
+    ul
+        width: 100%
+        height: resources.$calendar-size
+        display: flex
+        flex-flow: row wrap
+        justify-content: flex-start
+        align-content: flex-start
+
+        .calendar-week-day
+            font-weight: 700
+            border-bottom: 1px solid resources.$shadow-color-dark
+            border-radius: 0
+
+        .calendar-day
+            font-weight: 600
+    
+        li
+            height: resources.$calendar-day-size
+            width: resources.$calendar-day-size
+            display: flex
+            justify-content: center
+            align-items: center
+            border-radius: 1rem
+
+            &.sibling-month 
+                color: resources.$shadow-color-dark
+                font-weight: 400
+    
+            &.calendar-day:hover
+                background-color: resources.$color-primary-dark
+                cursor: pointer
+                color: resources.$color-accent-bright
+                font-weight: 600
+                box-shadow: resources.$box-shadow-small
+
+            &.selected-0,
+            &.selected-1
+                background-color: resources.$color-primary-dark
+                font-weight: 600
+                color: resources.$color-accent-bright
+                box-shadow: resources.$box-shadow-small
