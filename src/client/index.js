@@ -23,9 +23,7 @@ import { NEXT } from './js/globals'
 import { formatDay } from './js/helpers'
 
 // CSS Imports
-import './styles/normalize.scss'
-import './styles/resets.scss'
-import './styles/main.scss'
+import './styles/main.sass'
 
 // Media Imports
 import icon_a01d from './media/icons/a01d.png';
