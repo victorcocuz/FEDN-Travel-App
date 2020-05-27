@@ -24,14 +24,14 @@ The app adds optional functionality through:
 
 ## How to run the project
 Fork and clone the repo. Then run:
-`npm install` - installs the nodes
-`npm run build-dev` - to start a development server
-`npm run build-prod` - to start a production server
-`npm test` - to run the jest tests
-`npm start` - to start the node server
+-`npm install` - installs the nodes
+-`npm run build-dev` - to start a development server
+-`npm run build-prod` - to start a production server
+-`npm test` - to run the jest tests
+-`npm start` - to start the node server
 
-The development server will automatically open on `localhost:8000`.
-Once the node server is started, it will run on `localhost:8080`.
+-The development server will automatically open on `localhost:8000`.
+-Once the node server is started, it will run on `localhost:8080`.
 
 Notes:
 -You will need to register with the APIs mentioned above and add the keys to your .env file to be able to run the project.
