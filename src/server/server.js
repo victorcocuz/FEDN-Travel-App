@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use(express.static('dist'));
 
 // Create express server
-const server = app.listen(PORT, () => console.log(`listening on ${PORT}`));
+const server = app.listen(PORT, '0.0.0.0', () => console.log(`listening on ${PORT}`));
 
 // Generate app home page
 const path = require('path');
