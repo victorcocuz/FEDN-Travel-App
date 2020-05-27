@@ -1,7 +1,7 @@
 /*******************************************************************************************************
 Imports and variables
 ********************************************************************************************************/
-const localUrl = `//localhost:${process.env.PORT}`;
+const localUrl = `//0.0.0.0:${process.env.PORT}`;
 const today = new Date();
 const currentMonth = [];
 
