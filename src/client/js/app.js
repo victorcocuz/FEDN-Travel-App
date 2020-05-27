@@ -65,7 +65,7 @@ document.querySelector('#town-submit').addEventListener('click', (event) => {
     // If validation passed, get location coordinates, normal weather and photos
     (async () => {
         // Call server to fetch location coordinates from the api
-        let location = await getData(`${localUrl}/getLocation`, tripDetails.town);
+        let location = await getData(`/getLocation`, tripDetails.town);
         Client.updateLocation(location);
         // console.log(`coordinats are ${JSON.stringify({location: location})}`);
 
@@ -86,18 +86,18 @@ document.querySelector('#town-submit').addEventListener('click', (event) => {
         let weatherForecastDaily;
         if (startDate < 16) {
             // Call server to fetch daily forecast for the next 16 days
-            weatherForecastDaily = await getData(`${localUrl}/getWeatherDaily`, weatherbitData);
+            weatherForecastDaily = await getData(`/getWeatherDaily`, weatherbitData);
             // console.log(`weather forecast daily is ${JSON.stringify({dailyforecast: weatherForecastDaily})}`);
         };
 
         // Call server to fetch normal weather forecast for given dates
-        let weatherForecastNormal = await getData(`${localUrl}/getWeatherNormal`, weatherbitData);
+        let weatherForecastNormal = await getData(`/getWeatherNormal`, weatherbitData);
         // console.log(`weather forecast normal is ${JSON.stringify({normalforecast: weatherForecastNormal})}`);
         
         Client.updateWeather(weatherForecastDaily, weatherForecastNormal, startDate, endDate);
 
         // Call server to fetch photos for given location
-        let photos = await getData(`${localUrl}/getPhotos`, tripDetails.town);
+        let photos = await getData(`/getPhotos`, tripDetails.town);
         Client.updatePhotos(photos);
         // console.log(`photos are ${JSON.stringify({photos: photos})}`);
     })();
