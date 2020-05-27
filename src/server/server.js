@@ -175,3 +175,5 @@ app.post('/getPhotos', (req, res) => {
         res.send(photoUrls);   
     })();
 });
+
+module.exports = server
