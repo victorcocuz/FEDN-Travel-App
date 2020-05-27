@@ -55,7 +55,7 @@ module.exports = {
         }),
         new webpack.DefinePlugin({
             'process.env': {
-                'PORT': '"8000"'
+                'PORT': '"3000"'
             }
         })
     ]

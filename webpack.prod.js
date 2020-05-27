@@ -63,7 +63,7 @@ module.exports = {
         new MiniCssExtractPlugin({filename: '[name].css'}),
         new webpack.DefinePlugin({
             'process.env': {
-                'PORT': '"8000"'
+                'PORT': '"3000"'
             }
         }),
         // new WorkboxPlugin.GenerateSW()
