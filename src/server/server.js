@@ -5,7 +5,7 @@ dotenv.config();
 // Get Environment variables
 const PORT = process.env.PORT || 8000;
 const GEONAMES_USER = process.env.GEONAMES_USER;
-const WEATHERBIT_API_KEY = process.env.WEATHERBIT_API_KEY_2;
+const WEATHERBIT_API_KEY = process.env.WEATHERBIT_API_KEY;
 const PIXELBAY_API_KEY = process.env.PIXELBAY_API_KEY;
 
 // Setup Express
